@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Telegram Mini App</title>
+</head>
+<body>
+    <h1>我的用户信息</h1>
+    <p id="query-id">Query ID: 未获取</p>
+    <p id="user-info">用户信息: 未获取</p>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        const initData = window.Telegram.WebApp.initData;
+        if (initData) {
+            const decodedData = decodeURIComponent(initData);
+            const params = new URLSearchParams(decodedData);
+            
+            const queryId = params.get("query_id");
+            document.getElementById("query-id").innerText = `Query ID: ${queryId}`;
+
+            const user = JSON.parse(params.get("user"));
+            document.getElementById("user-info").innerText = `用户信息: ID=${user.id}, 名字=${user.first_name}, 用户名=${user.username || "无"}`;
+        } else {
+            document.getElementById("user-info").innerText = "请在 Telegram 中打开";
+        }
+    </script>
+</body>
+</html>
